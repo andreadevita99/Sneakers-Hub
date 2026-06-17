@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sneakers Hub</title>
+    <meta name="description" content="Scopri la collezione di sneakers di Sneakers Hub. Modelli esclusivi e tendenze." />
+    <meta name="keywords" content="sneakers, scarpe, moda, collezione, adidas, nike, vans" />
+    <meta property="og:title" content="Sneakers Hub" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="La tua collezione di sneakers preferite." />
+    
+    <!-- Favicon from GitHub via jsDelivr -->
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/andreadevita99/Sneakers-Hub@main/favicon.png" type="image/png" />
+    
+    <style>
+        /* ===== VARIABILI CSS (Light / Dark) ===== */
+        :root {
+            --bg-body: #f7f7f7;
+            --bg-card: #ffffff;
+            --text-primary: #1e1e1e;
+            --text-secondary: #555555;
+            --text-muted: #777777;
+            --border-color: #e0e0e0;
+            --shadow-light: rgba(0, 0, 0, 0.04);
+            --shadow-hover: rgba(0, 0, 0, 0.10);
+            --overlay-bg: rgba(255, 255, 255, 0.20);
+            --toggle-bg: #cccccc;
+            --toggle-active: #2e7daf;
+            --thumb-bg: #ffffff;
+        }
+
+        body.dark-mode {
+            --bg-body: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --text-primary: #e8e8e8;
+            --text-secondary: #aaaaaa;
+            --text-muted: #888888;
+            --border-color: #444444;
+            --shadow-light: rgba(0, 0, 0, 0.4);
+            --shadow-hover: rgba(0, 0, 0, 0.7);
+            --overlay-bg: rgba(255, 255, 255, 0.05);
+            --toggle-bg: #555555;
+            --toggle-active: #1e5a7a;
+            --thumb-bg: #f0f0f0;
+        }
+
+        /* ===== RESET & BASE ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            padding: 20px;
+            line-height: 1.5;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color 0.3s ease;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            transition: color 0.3s ease;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* ===== PULSANTE LINGUA CON BANDIERE ===== */
+        .lang-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            transition: background 0.2s, border-color 0.3s, color 0.3s;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .lang-btn:hover {
+            background: var(--border-color);
+        }
+        .lang-btn .flag {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* ===== TOGGLE IOS (Sole / Luna) ===== */
+        .toggle-switch {
+            width: 54px;
+            height: 30px;
+            background: var(--toggle-bg);
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 3px;
+            transition: background 0.3s ease;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .toggle-switch.active {
+            background: var(--toggle-active);
+        }
+
+        .toggle-switch .thumb {
+            width: 24px;
+            height: 24px;
+            background: var(--thumb-bg);
+            border-radius: 50%;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+            color: #333;
+        }
+
+        .toggle-switch.active .thumb {
+            transform: translateX(24px);
+            background: var(--thumb-bg);
+        }
+
+        /* ===== GRIGLIA ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px var(--shadow-light);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px var(--shadow-hover);
+        }
+
+        /* ===== WRAPPER IMMAGINE (per overlay) ===== */
+        .card-image-wrapper {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            background: #f0f0f0;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode .card-image-wrapper {
+            background: #222;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+            display: block;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            background: transparent;
+        }
+
+        /* Overlay molto leggero, senza testo */
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--overlay-bg);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card:hover .card-image {
+            transform: scale(1.04);
+        }
+
+        /* ===== BODY CARD ===== */
+        .card-body {
+            padding: 12px 14px 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .card-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.3;
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .card-size {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .card-color {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .header-controls {
+                gap: 10px;
+            }
+
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 16px;
+            }
+
+            .card-body {
+                padding: 10px 12px 12px;
+            }
+
+            .card-name {
+                font-size: 0.85rem;
+            }
+
+            .card-size {
+                font-size: 0.75rem;
+            }
+
+            .card-color {
+                font-size: 0.7rem;
+            }
+
+            .toggle-switch {
+                width: 48px;
+                height: 26px;
+            }
+            .toggle-switch .thumb {
+                width: 20px;
+                height: 20px;
+                font-size: 11px;
+            }
+            .toggle-switch.active .thumb {
+                transform: translateX(22px);
+            }
+        }
+
+        @media (max-width: 400px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <h1 id="main-title">Sneakers Hub</h1>
+            <div class="header-controls">
+                <button id="lang-toggle" class="lang-btn" aria-label="Cambia lingua">
+                    <span class="flag" id="current-flag">🇮🇹</span>
+                    <span id="lang-label">IT</span>
+                </button>
+                <div id="theme-toggle" class="toggle-switch" role="button" aria-label="Attiva/disattiva dark mode">
+                    <div class="thumb" id="theme-thumb">☀️</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- GRIGLIA PRODOTTI -->
+        <div class="grid" id="sneakers-grid"></div>
+    </div>
+
+    <script>
+        // =============================================
+        // 1. DATI DEI PRODOTTI (aggiornati da Notion)
+        // =============================================
+        const sneakers = [{
+            name: "Tommy Hilfiger Sock Sneaker",
+            color: "Black/White",
+            size: "N° 40",
+            image: "Tommy Hilfiger Sock Sneaker.png"
+        }, {
+            name: "Adidas Megaride S2",
+            color: "Core Black / Hi-Res Blue / Pulse Lilac",
+            size: "N° 40",
+            image: "Adidas Megaride S2.png"
+        }, {
+            name: "Adidas Yeezy Foam RNNR",
+            color: "Ochre",
+            size: "N° 42",
+            image: "Adidas Yeezy Foam RNNR.png"
+        }, {
+            name: "Adidas Adifom Superstar",
+            color: "White",
+            size: "N° 40",
+            image: "Adidas Adifom Superstar.png"
+        }, {
+            name: "Adidas Climacool",
+            color: "Off White",
+            size: "N° 40",
+            image: "Adidas Climacool.png"
+        }, {
+            name: "Adidas Lightblaze moc",
+            color: "Crystal White / Dash Grey / Dash Grey",
+            size: "N° 40",
+            image: "Adidas Lightblaze moc.png"
+        }, {
+            name: "Adidas AdiFom Q",
+            color: "Core Black/Impact Orange/Grey Six",
+            size: "N° 40",
+            image: "Adidas AdiFom Q.png"
+        }, {
+            name: "Nike ReactX",
+            color: "Smoke Grey",
+            size: "N° 40",
+            image: "Nike ReactX.png"
+        }, {
+            name: "Bershka x Rick and Morty",
+            color: "White",
+            size: "N° 39-40",
+            image: "Bershka x Rick and Morty.png"
+        }, {
+            name: "Vans Classic Slip-On",
+            color: "Moon Pewter/True White",
+            size: "N° 39-40",
+            image: "Vans Classic Slip-On.png"
+        }, {
+            name: "Vans x NASA Sk8-Hi MTE",
+            color: "NASA Space Voyager True White",
+            size: "N° 39",
+            image: "Vans x NASA Sk8-Hi MTE NASA Space Voyager.png"
+        }, {
+            name: "Timberland Classic",
+            color: "",
+            size: "N° 39",
+            image: "Timberland.png"
+        }, {
+            name: "Adidas Yeezy Slides",
+            color: "Onyx",
+            size: "N° 40",
+            image: "Adidas Yeezy Slides.png"
+        }, {
+            name: "Crocs Classic Sabot U",
+            color: "Pink",
+            size: "N° 38-39",
+            image: "Crocs Classic Sabot U.png"
+        }, {
+            name: "Havaianas Top Surfer I",
+            color: "Graphic Grey",
+            size: "N° 39-40",
+            image: "Havaianas Top Surfer I.png"
+        }, {
+            name: "Adidas Cloudfoam Comfort",
+            color: "Black",
+            size: "N° 40",
+            image: "Adidas Cloudfoam Comfort.png"
+        }, {
+            name: "Kalenji Kiprun Trail XT7",
+            color: "Kalensole Trail",
+            size: "N° 40",
+            image: "Kalenji Kiprun Trail XT7 Kalensole.png"
+        }];
+
+        // =============================================
+        // 2. CONVERSIONE EU → US
+        // =============================================
+        const euToUS = {
+            '38': '6',
+            '39': '6.5',
+            '40': '7',
+            '41': '8',
+            '42': '9',
+            '43': '10',
+            '44': '11',
+            '45': '12'
+        };
+
+        function convertToUS(euSize) {
+            // euSize è una stringa come "40" o "39-40"
+            const parts = euSize.split('-');
+            if (parts.length === 2) {
+                const left = euToUS[parts[0]] || parts[0];
+                const right = euToUS[parts[1]] || parts[1];
+                return left + '-' + right;
+            } else {
+                return euToUS[euSize] || euSize;
+            }
+        }
+
+        // =============================================
+        // 3. RENDERIZZAZIONE GRIGLIA
+        // =============================================
+        const BASE_URL = 'https://cdn.jsdelivr.net/gh/andreadevita99/Sneakers-Hub@main/';
+        const grid = document.getElementById('sneakers-grid');
+
+        function buildGrid() {
+            grid.innerHTML = '';
+            sneakers.forEach(item => {
+                const imageUrl = BASE_URL + encodeURIComponent(item.image);
+
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                // Wrapper + Immagine + Overlay
+                const wrapper = document.createElement('div');
+                wrapper.className = 'card-image-wrapper';
+
+                const img = document.createElement('img');
+                img.className = 'card-image';
+                img.src = imageUrl;
+                img.alt = item.name + (item.color ? ' ' + item.color : '');
+                img.loading = 'lazy';
+                wrapper.appendChild(img);
+
+                const overlay = document.createElement('div');
+                overlay.className = 'card-overlay';
+                wrapper.appendChild(overlay);
+
+                card.appendChild(wrapper);
+
+                // Body
+                const body = document.createElement('div');
+                body.className = 'card-body';
+
+                // Nome (solo nome, senza colorway)
+                const name = document.createElement('div');
+                name.className = 'card-name';
+                name.textContent = item.name;
+                body.appendChild(name);
+
+                // Numero – estraiamo il valore puro (senza "N°") e lo salviamo in un data-attribute
+                const size = document.createElement('div');
+                size.className = 'card-size';
+                const pureSize = item.size.replace('N° ', '').trim();
+                size.dataset.euSize = pureSize;
+                size.textContent = 'N° ' + pureSize; // default italiano
+                body.appendChild(size);
+
+                // Colorway (sotto il numero)
+                const color = document.createElement('div');
+                color.className = 'card-color';
+                color.textContent = item.color;
+                body.appendChild(color);
+
+                card.appendChild(body);
+                grid.appendChild(card);
+            });
+        }
+
+        buildGrid();
+
+        // =============================================
+        // 4. LINGUA (IT / EN) con bandiere e conversione taglie
+        // =============================================
+        let currentLang = 'it';
+        const langBtn = document.getElementById('lang-toggle');
+        const currentFlag = document.getElementById('current-flag');
+        const langLabel = document.getElementById('lang-label');
+
+        function updateLanguage(lang) {
+            // Aggiorna bandiera e label
+            if (lang === 'en') {
+                currentFlag.textContent = '🇬🇧';
+                langLabel.textContent = 'EN';
+                document.documentElement.lang = 'en';
+                document.querySelector('title').textContent = 'Sneakers Hub';
+                document.getElementById('main-title').textContent = 'Sneakers Hub';
+            } else {
+                currentFlag.textContent = '🇮🇹';
+                langLabel.textContent = 'IT';
+                document.documentElement.lang = 'it';
+                document.querySelector('title').textContent = 'Sneakers Hub';
+                document.getElementById('main-title').textContent = 'Sneakers Hub';
+            }
+
+            // Aggiorna i numeri delle scarpe
+            document.querySelectorAll('.card-size').forEach(el => {
+                const euSize = el.dataset.euSize;
+                if (!euSize) return;
+                if (lang === 'it') {
+                    el.textContent = 'N° ' + euSize;
+                } else {
+                    el.textContent = 'N° ' + convertToUS(euSize);
+                }
+            });
+        }
+
+        // Imposta lingua iniziale (italiano)
+        updateLanguage('it');
+
+        // Cambio lingua al click
+        langBtn.addEventListener('click', () => {
+            currentLang = (currentLang === 'it') ? 'en' : 'it';
+            updateLanguage(currentLang);
+        });
+
+        // =============================================
+        // 5. TEMA (Dark / Light) con localStorage
+        // =============================================
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeThumb = document.getElementById('theme-thumb');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggle.classList.add('active');
+                themeThumb.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeToggle.classList.remove('active');
+                themeThumb.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Carica tema salvato (default: light)
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.contains('dark-mode');
+            setTheme(isDark ? 'light' : 'dark');
+        });
+    </script>
+</body>
+</html>
